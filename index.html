@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard del chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 20px 60px 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 40px;
+            border-left: 4px solid #ffcc00;
+            padding-left: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #cccccc;
+            margin-bottom: 30px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: rgba(15, 23, 42, 0.9);
+            border-radius: 16px;
+            padding: 15px 15px 10px 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: #ffcc00;
+        }
+        .card p {
+            font-size: 0.9rem;
+            color: #e5e7eb;
+        }
+        img.chart {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        img.chart:hover {
+            transform: scale(1.02);
+        }
+
+        /* Modal para zoom */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-backdrop.active {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        .modal-close {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 32px;
+            color: #f9fafb;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        .tagline {
+            font-weight: 500;
+            color: #a5b4fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard épico del chat</h1>
+        <p class="subtitle">
+            Resumen visual de la actividad del grupo: rachas, buhos, gracias, preguntas y otras rarezas estadísticas.
+        </p>
+
+        <h2>Ritmo, agradecimientos y preguntas</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Mayor racha de mensajes</h3>
+                <p class="tagline">Quien se apoderó del chat sin soltar el teclado.</p>
+                <img class="chart zoomable" src="streaks.png" alt="Mayor racha de mensajes seguidos">
+            </div>
+            <div class="card">
+                <h3>El club de los buhos</h3>
+                <p class="tagline">Proporción de mensajes entre las 22 y las 6.</p>
+                <img class="chart zoomable" src="night_owls.png" alt="Buhos del chat">
+            </div>
+            <div class="card">
+                <h3>Quien más dice gracias</h3>
+                <p class="tagline">La persona más agradecida del grupo.</p>
+                <img class="chart zoomable" src="gracias.png" alt="Quien más dice gracias">
+            </div>
+        </div>
+
+        <h2>Curiosos, risas y mensajes kilométricos</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>El más pregunton</h3>
+                <p class="tagline">Ranking por cantidad de signos de interrogación.</p>
+                <img class="chart zoomable" src="questions.png" alt="Mas pregunton">
+            </div>
+            <div class="card">
+                <h3>Rey del jaja</h3>
+                <p class="tagline">Quien ríe más en el chat con jaja y variantes.</p>
+                <img class="chart zoomable" src="jaja.png" alt="Rey del jaja">
+            </div>
+            <div class="card">
+                <h3>Mensajes kilométricos</h3>
+                <p class="tagline">Promedio de largo de mensaje por usuario.</p>
+                <img class="chart zoomable" src="long_msgs.png" alt="Mensajes kilometricos">
+            </div>
+        </div>
+
+        <h2>Compartir, actividad semanal y links</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Actividad semanal top 5</h3>
+                <p class="tagline">Heatmap de mensajes por semana de los cinco más activos.</p>
+                <img class="chart zoomable" src="weekly_heatmap.png" alt="Actividad semanal top 5">
+            </div>
+            <div class="card">
+                <h3>Compartidor de links</h3>
+                <p class="tagline">Quien mantiene vivo el contenido externo.</p>
+                <img class="chart zoomable" src="links.png" alt="Compartidor de links">
+            </div>
+        </div>
+
+        <footer>
+            Dashboard generado automáticamente a partir del historial del chat.
+        </footer>
+    </div>
+
+    <!-- Modal para zoom -->
+    <div id="zoom-modal" class="modal-backdrop" onclick="closeZoom(event)">
+        <div class="modal-close" onclick="closeZoom(event)">×</div>
+        <div class="modal-content">
+            <img id="zoom-img" src="" alt="Zoom gráfico">
+        </div>
+    </div>
+
+    <script>
+        const zoomableImages = document.querySelectorAll(".zoomable");
+        const modal = document.getElementById("zoom-modal");
+        const modalImg = document.getElementById("zoom-img");
+
+        zoomableImages.forEach(img => {
+            img.addEventListener("click", () => {
+                modalImg.src = img.src;
+                modal.classList.add("active");
+            });
+        });
+
+        function closeZoom(event) {
+            // Evitar cerrar si se hace clic directo en la imagen
+            if (event.target.id === "zoom-img") {
+                return;
+            }
+            modal.classList.remove("active");
+        }
+    </script>
+</body>
+</html>
